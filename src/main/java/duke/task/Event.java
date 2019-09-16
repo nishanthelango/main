@@ -39,8 +39,42 @@ public class Event extends Task implements Snoozeable {
         } catch (IndexOutOfBoundsException e) {
             throw new DukeException("Format for event: event <event> /at <start datetime> to <end datetime>");
         } catch (ParseException e) {
-            throw new DukeException("Inv7alid datetime. Correct format: dd/mm/yyyy hhmm");
+            throw new DukeException("Invalid datetime. Correct format: dd/mm/yyyy hhmm");
         }
+    }
+
+    /**
+     * Checks if the event being added clashes with any existing events
+     *
+     * @param eventToAdd the event task to be added
+     * @param taskList List of tasks
+     * @throws DukeException error if there is a clash
+     */
+    public static void checkClash(Event eventToAdd, TaskList taskList) throws DukeException {
+        for (Task task : taskList.getTasks()) {
+            if (task instanceof Event) {
+                if (startClashes(eventToAdd,task) || endClashes(eventToAdd,task) || entireEventClashes(eventToAdd,task)
+                    || isStartOrEndEqual(eventToAdd,task)) {
+                    throw new DukeException("Clashes with following event:\n" + "\t" + task.toString());
+                }
+            }
+        }
+    }
+
+    private static boolean startClashes(Event eventToAdd, Task task) {
+        return eventToAdd.start.after(((Event) task).start) && eventToAdd.start.before(((Event) task).end);
+    }
+
+    private static boolean endClashes(Event eventToAdd, Task task) {
+        return eventToAdd.end.after(((Event) task).start) && eventToAdd.end.before(((Event) task).end);
+    }
+
+    private static boolean entireEventClashes(Event eventToAdd, Task task) {
+        return eventToAdd.start.before(((Event) task).start) && eventToAdd.end.after(((Event) task).start);
+    }
+
+    private static boolean isStartOrEndEqual(Event eventToAdd, Task task) {
+        return eventToAdd.start.equals(((Event) task).start) || eventToAdd.end.equals(((Event) task).end);
     }
 
     @Override
