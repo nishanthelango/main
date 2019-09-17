@@ -44,7 +44,7 @@ public class Event extends Task implements Snoozeable {
     }
 
     /**
-     * Checks if the event being added clashes with any existing events
+     * Checks if the event being added clashes with any existing events.
      *
      * @param eventToAdd the event task to be added
      * @param taskList List of tasks
@@ -53,8 +53,8 @@ public class Event extends Task implements Snoozeable {
     public static void checkClash(Event eventToAdd, TaskList taskList) throws DukeException {
         for (Task task : taskList.getTasks()) {
             if (task instanceof Event) {
-                if (startClashes(eventToAdd,task) || endClashes(eventToAdd,task) || entireEventClashes(eventToAdd,task)
-                    || isStartOrEndEqual(eventToAdd,task)) {
+                if (startClashes(eventToAdd, task) || endClashes(eventToAdd, task)
+                        || entireEventClashes(eventToAdd, task) || isStartOrEndEqual(eventToAdd, task)) {
                     throw new DukeException("Clashes with following event:\n" + "\t" + task.toString());
                 }
             }
