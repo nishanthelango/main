@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class DetectAnomaliesTest {
@@ -16,14 +16,12 @@ public class DetectAnomaliesTest {
     }
 
     @Test
-    void startClashes_clash_exceptionThrown() throws DukeException {
+    void startClashes_clash_returns_true() throws DukeException {
         TaskList taskList = new TaskList();
         Task task = new Event(getList("Event /at 12/12/2020 1800 to 12/12/2020 1900"));
         taskList.add(task);
-        Event eventToAdd = new Event(getList("Event /at 12/12/2020 1830 to 12/12/2020 1930"));
-        assertThrows(DukeException.class, () -> {
-            Event.checkClash(eventToAdd,taskList);
-        });
+        Event event = new Event(getList("Event /at 12/12/2020 1830 to 12/12/2020 1930"));
+        assertTrue(taskList.isClashing(event));
     }
 
     @Test
@@ -31,21 +29,17 @@ public class DetectAnomaliesTest {
         TaskList taskList = new TaskList();
         Task task = new Event(getList("Event /at 12/12/2020 1800 to 12/12/2020 1900"));
         taskList.add(task);
-        Event eventToAdd = new Event(getList("Event /at 12/12/2020 1730 to 12/12/2020 1830"));
-        assertThrows(DukeException.class, () -> {
-            Event.checkClash(eventToAdd,taskList);
-        });
+        Event event = new Event(getList("Event /at 12/12/2020 1730 to 12/12/2020 1830"));
+        assertTrue(taskList.isClashing(event));
     }
 
     @Test
-    void entireEventClashes_clash_exceptionThrown() throws DukeException {
+    void entireEventClashes_clash_returnsTrue() throws DukeException {
         TaskList taskList = new TaskList();
         Task task = new Event(getList("Event /at 12/12/2020 1800 to 12/12/2020 1900"));
         taskList.add(task);
-        Event eventToAdd = new Event(getList("Event /at 12/12/2020 1730 to 12/12/2020 1930"));
-        assertThrows(DukeException.class, () -> {
-            Event.checkClash(eventToAdd,taskList);
-        });
+        Event event = new Event(getList("Event /at 12/12/2020 1730 to 12/12/2020 1930"));
+        assertTrue(taskList.isClashing(event));
     }
 
     @Test
@@ -53,9 +47,7 @@ public class DetectAnomaliesTest {
         TaskList taskList = new TaskList();
         Task task = new Event(getList("Event /at 12/12/2020 1800 to 12/12/2020 1900"));
         taskList.add(task);
-        Event eventToAdd = new Event(getList("Event /at 12/12/2020 1800 to 12/12/2020 1830"));
-        assertThrows(DukeException.class, () -> {
-            Event.checkClash(eventToAdd,taskList);
-        });
+        Event event = new Event(getList("Event /at 12/12/2020 1800 to 12/12/2020 1830"));
+        assertTrue(taskList.isClashing(event));
     }
 }

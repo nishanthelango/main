@@ -44,37 +44,30 @@ public class Event extends Task implements Snoozeable {
     }
 
     /**
-     * Checks if the event being added clashes with any existing events.
+     * Checks if the event being added clashes with this instance of event.
      *
-     * @param eventToAdd the event task to be added
-     * @param taskList List of tasks
-     * @throws DukeException error if there is a clash
+     * @param event the event task to be added
+     * @return true if the event clashes, false otherwise
      */
-    public static void checkClash(Event eventToAdd, TaskList taskList) throws DukeException {
-        for (Task task : taskList.getTasks()) {
-            if (task instanceof Event) {
-                if (startClashes(eventToAdd, task) || endClashes(eventToAdd, task)
-                        || entireEventClashes(eventToAdd, task) || isStartOrEndEqual(eventToAdd, task)) {
-                    throw new DukeException("Clashes with following event:\n" + "\t" + task.toString());
-                }
-            }
-        }
+    public boolean clashesWith(Event event) {
+        return (startClashes(event) || endClashes(event)
+                || entireEventClashes(event) || isStartOrEndEqual(event));
     }
 
-    private static boolean startClashes(Event eventToAdd, Task task) {
-        return eventToAdd.start.after(((Event) task).start) && eventToAdd.start.before(((Event) task).end);
+    private boolean startClashes(Event event) {
+        return event.start.after(this.start) && event.start.before(this.end);
     }
 
-    private static boolean endClashes(Event eventToAdd, Task task) {
-        return eventToAdd.end.after(((Event) task).start) && eventToAdd.end.before(((Event) task).end);
+    private boolean endClashes(Event event) {
+        return event.end.after(this.start) && event.end.before(this.end);
     }
 
-    private static boolean entireEventClashes(Event eventToAdd, Task task) {
-        return eventToAdd.start.before(((Event) task).start) && eventToAdd.end.after(((Event) task).start);
+    private boolean entireEventClashes(Event event) {
+        return event.start.before(this.start) && event.end.after(this.start);
     }
 
-    private static boolean isStartOrEndEqual(Event eventToAdd, Task task) {
-        return eventToAdd.start.equals(((Event) task).start) || eventToAdd.end.equals(((Event) task).end);
+    private boolean isStartOrEndEqual(Event event) {
+        return event.start.equals(this.start) || event.end.equals(this.end);
     }
 
     @Override
