@@ -57,7 +57,7 @@ public class DetectAnomaliesTest {
         TaskList taskList = new TaskList();
         Task task = new Event(getList("Event meeting /at 12/12/2020 1800 to 12/12/2020 1900"));
         taskList.add(task);
-        Event event = new Event(getList("Event party /at 12/12/2020 1900 to 12/12/2020 2000"));
+        Event event = new Event(getList("Event party /at 12/12/2020 1930 to 12/12/2020 2000"));
         assertFalse(taskList.isClashing(event));
     }
 }

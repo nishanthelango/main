@@ -9,6 +9,7 @@ import duchess.ui.Ui;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,7 +63,7 @@ public class ViewScheduleCommand extends Command {
             throw new DukeException("There are no tasks in the schedule.");
         }
 
-        tasksForToday.sort((a, b) -> a.getTimeFrame().compareTo(b.getTimeFrame()));
+        Collections.sort(tasksForToday);
         ui.showScheduleResult(tasksForToday, words.get(words.indexOf("/for") + 1));
     }
 }
