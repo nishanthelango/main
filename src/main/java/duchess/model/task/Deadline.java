@@ -10,11 +10,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Deadline extends Task {
-    private String description;
     private LocalDateTime deadline;
 
     /**
@@ -40,28 +39,19 @@ public class Deadline extends Task {
     }
 
     @Override
-    public boolean containsKeyword(String keyword) {
-        return this.description.contains(keyword);
-    }
-
-    @Override
     public void snooze() {
         deadline = deadline.plusWeeks(1);
     }
 
     @Override
-    public List<Task> getReminders() {
-        List<Task> list = new ArrayList<>();
-        list.add(this);
-        return list;
+    public Optional<Task> getReminder() {
+        return Optional.of(this);
     }
 
     @JsonCreator
     public Deadline(
-            @JsonProperty("description") String description,
             @JsonProperty("deadline") LocalDateTime deadline
     ) {
-        this.description = description;
         this.deadline = deadline;
     }
 
@@ -75,11 +65,6 @@ public class Deadline extends Task {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu HHmm")
                 .withResolverStyle(ResolverStyle.STRICT);
         return String.format("[D]%s %s (by: %s)", super.toString(), this.description, formatter.format(this.deadline));
-    }
-
-    @JsonGetter("description")
-    public String getDescription() {
-        return description;
     }
 
     @JsonGetter("deadline")
