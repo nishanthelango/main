@@ -41,12 +41,29 @@ public class FindCommand extends Command {
     public void execute(Store store, Ui ui, Storage storage) throws DuchessException {
         if (words.size() > 0) {
             String searchTerm = String.join(" ", words.subList(0, words.size()));
-            List<Task> filteredTasks =
-                    store.getTaskList().stream()
-                            .filter(task -> lcs(task.getDescription().replaceAll(" ",""),
-                                    searchTerm.replaceAll(" ",""))
-                                    >= searchTerm.replaceAll(" ", "").length())
-                            .collect(Collectors.toList());
+            List<Task> filteredTasks;
+            /*
+            If search term is enclosed by double quotation marks,
+            search for exact matches.
+             */
+            if (searchTerm.charAt(0) == '"' && searchTerm.charAt(searchTerm.length() - 1) == '"') {
+                filteredTasks =
+                        store.getTaskList().stream()
+                                .filter(task -> task.getDescription()
+                                        .equals(searchTerm.substring(1, searchTerm.length() - 1)))
+                                .collect(Collectors.toList());
+            /*
+            Search for task descriptions with longest common subsequence of length
+            equal to at least 1 less than the length of the search term.
+             */
+            } else {
+                filteredTasks =
+                        store.getTaskList().stream()
+                                .filter(task -> lcs(task.getDescription().replaceAll(" ", ""),
+                                        searchTerm.replaceAll(" ", ""))
+                                        >= searchTerm.replaceAll(" ", "").length() - 1)
+                                .collect(Collectors.toList());
+            }
             if (filteredTasks.size() > 0) {
                 ui.showSearchResult(filteredTasks);
             } else {
