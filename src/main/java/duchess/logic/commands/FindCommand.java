@@ -39,7 +39,9 @@ public class FindCommand extends Command {
 
     @Override
     public void execute(Store store, Ui ui, Storage storage) throws DuchessException {
-        if (words.size() > 0) {
+        if (words.size() == 0) {
+            throw new DuchessException("Please enter at least a keyword to search.");
+        } else {
             String searchTerm = String.join(" ", words.subList(0, words.size()));
             List<Task> filteredTasks;
             /*
@@ -64,13 +66,11 @@ public class FindCommand extends Command {
                                         >= searchTerm.replaceAll(" ", "").length() - 1)
                                 .collect(Collectors.toList());
             }
-            if (filteredTasks.size() > 0) {
-                ui.showSearchResult(filteredTasks);
-            } else {
+            if (filteredTasks.size() == 0) {
                 throw new DuchessException("There are no matching tasks.");
+            } else {
+                ui.showSearchResult(filteredTasks);
             }
-        } else {
-            throw new DuchessException("Please enter at least a keyword to search.");
         }
     }
 }
