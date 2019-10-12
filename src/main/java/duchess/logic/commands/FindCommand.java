@@ -49,7 +49,7 @@ public class FindCommand extends Command {
             If search term is enclosed by double quotation marks,
             search for exact matches.
              */
-            if (!searchTerm.equals("\"") && searchTerm.charAt(0) == '"'
+            if (!"\"".equals(searchTerm) && searchTerm.charAt(0) == '"'
                 && searchTerm.charAt(searchTerm.length() - 1) == '"') {
                 filteredTasks = store
                         .getTaskList()
