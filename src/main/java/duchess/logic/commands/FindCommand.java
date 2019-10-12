@@ -50,13 +50,13 @@ public class FindCommand extends Command {
             search for exact matches.
              */
             if (!searchTerm.equals("\"") && searchTerm.charAt(0) == '"'
-                    && searchTerm.charAt(searchTerm.length() - 1) == '"') {
-                        filteredTasks = store
-                                .getTaskList()
-                                .stream()
-                                .filter(task -> task.getDescription()
-                                .equals(searchTerm.substring(1, searchTerm.length() - 1)))
-                                .collect(Collectors.toList());
+                && searchTerm.charAt(searchTerm.length() - 1) == '"') {
+                filteredTasks = store
+                        .getTaskList()
+                        .stream()
+                        .filter(task -> task.getDescription()
+                        .equals(searchTerm.substring(1, searchTerm.length() - 1)))
+                        .collect(Collectors.toList());
             /*
             Search for task descriptions with longest common subsequence of length
             equal to at least 2 less than the length of the search term.
