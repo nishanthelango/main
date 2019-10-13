@@ -1,23 +1,7 @@
 package duchess.parser;
 
 import duchess.exceptions.DuchessException;
-import duchess.logic.commands.AddDeadlineCommand;
-import duchess.logic.commands.AddEventCommand;
-import duchess.logic.commands.AddModuleCommand;
-import duchess.logic.commands.AddTodoCommand;
-import duchess.logic.commands.ByeCommand;
-import duchess.logic.commands.Command;
-import duchess.logic.commands.DeleteModuleCommand;
-import duchess.logic.commands.DeleteTaskCommand;
-import duchess.logic.commands.DoneCommand;
-import duchess.logic.commands.FindCommand;
-import duchess.logic.commands.ListModulesCommand;
-import duchess.logic.commands.ListTasksCommand;
-import duchess.logic.commands.LogCommand;
-import duchess.logic.commands.ReminderCommand;
-import duchess.logic.commands.SnoozeCommand;
-import duchess.logic.commands.UndoCommand;
-import duchess.logic.commands.ViewScheduleCommand;
+import duchess.logic.commands.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -81,9 +65,17 @@ public class Parser {
                 throw new DuchessException("Usage: delete (module|task) <number>");
             }
         case "done":
-            return new DoneCommand(arguments);
+            try {
+                return new DoneCommand(Integer.parseInt(words.get(0)) - 1);
+            } catch (NumberFormatException e) {
+                throw new DuchessException("Please supply a number. Eg: done 2");
+            }
         case "todo":
-            return new AddTodoCommand(arguments);
+            if (words.get(words.size() - 1).charAt(0) == '#') {
+                return new AddTodoCommand(words.subList(0, words.size() - 1), words.get(words.size() - 1).substring(1));
+            } else {
+                return new AddTodoCommand(words.subList(0, words.size()));
+            }
         case "deadline":
             return new AddDeadlineCommand(arguments);
         case "event":

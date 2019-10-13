@@ -12,23 +12,30 @@ import java.util.List;
 import java.util.Optional;
 
 public class AddTodoCommand extends Command {
-    private List<String> words;
+    private List<String> description;
+    private String moduleCode;
 
-    public AddTodoCommand(List<String> words) {
-        this.words = words;
+    public AddTodoCommand(List<String> description) {
+        this.description = description;
+        this.moduleCode = null;
+    }
+
+    public AddTodoCommand(List<String> description, String moduleCode) {
+        this.description = description;
+        this.moduleCode = moduleCode;
     }
 
     @Override
     public void execute(Store store, Ui ui, Storage storage) throws DuchessException {
         Task task;
-        if (words.get(words.size() - 1).charAt(0) == '#') {
-            task = new Todo(words.subList(0, words.size() - 1));
-            Optional<Module> module = store.findModuleByCode(words.get(words.size() - 1).substring(1));
+        if (moduleCode != null) {
+            task = new Todo(description);
+            Optional<Module> module = store.findModuleByCode(moduleCode);
             task.setModule(module.orElseThrow(() ->
                     new DuchessException("Unable to find given module.")
             ));
         } else {
-            task = new Todo(words.subList(0, words.size()));
+            task = new Todo(description);
         }
         store.getTaskList().add(task);
         ui.showTaskAdded(store.getTaskList(), task);
