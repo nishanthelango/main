@@ -71,13 +71,19 @@ public class Parser {
                 throw new DuchessException("Please supply a number. Eg: done 2");
             }
         case "todo":
-            if (words.get(words.size() - 1).charAt(0) == '#') {
-                return new AddTodoCommand(words.subList(0, words.size() - 1), words.get(words.size() - 1).substring(1));
+            if (arguments.get(arguments.size() - 1).charAt(0) == '#') {
+                return new AddTodoCommand(arguments.subList(0, arguments.size() - 1),
+                        arguments.get(arguments.size() - 1).substring(1));
             } else {
-                return new AddTodoCommand(words.subList(0, words.size()));
+                return new AddTodoCommand(arguments.subList(0, arguments.size()));
             }
         case "deadline":
-            return new AddDeadlineCommand(arguments);
+            if (arguments.get(arguments.size() - 1).charAt(0) == '#') {
+                return new AddDeadlineCommand(arguments.subList(0, arguments.size() - 1),
+                        arguments.get(arguments.size() - 1).substring(1));
+            } else {
+                return new AddTodoCommand(arguments.subList(0, arguments.size()));
+            }
         case "event":
             return new AddEventCommand(arguments);
         case "reminder":
