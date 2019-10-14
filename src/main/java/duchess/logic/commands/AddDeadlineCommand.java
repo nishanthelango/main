@@ -8,34 +8,39 @@ import duchess.storage.Storage;
 import duchess.storage.Store;
 import duchess.ui.Ui;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class AddDeadlineCommand extends Command {
-    /** List containing String objects. */
-    private List<String> words;
+    private String description;
+    private LocalDateTime deadline;
     private String moduleCode;
 
-    public AddDeadlineCommand(List<String> words) {
-        this.words = words;
+    /**
+     * Create a command to add a deadline.
+     *
+     * @param description String containing description of deadline task
+     * @param deadline LocalDateTime object of deadline task
+     */
+    public AddDeadlineCommand(String description, LocalDateTime deadline) {
+        this.description = description;
+        this.deadline = deadline;
+        this.moduleCode = null;
     }
 
-    public AddDeadlineCommand(List<String> words, String moduleCode) {
-        this.words = words;
+    public AddDeadlineCommand(String description, LocalDateTime deadline, String moduleCode) {
+        this(description, deadline);
         this.moduleCode = moduleCode;
     }
 
     @Override
     public void execute(Store store, Ui ui, Storage storage) throws DuchessException {
-        Task task;
+        Task task = new Deadline(description, deadline);
         if (moduleCode != null) {
-            task = new Deadline(words);
             Optional<Module> module = store.findModuleByCode(moduleCode);
             task.setModule(module.orElseThrow(() ->
                     new DuchessException("Unable to find given module.")
             ));
-        } else {
-            task = new Deadline(words);
         }
         store.getTaskList().add(task);
         ui.showTaskAdded(store.getTaskList(), task);

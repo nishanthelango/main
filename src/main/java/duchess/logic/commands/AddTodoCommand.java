@@ -8,19 +8,18 @@ import duchess.storage.Storage;
 import duchess.storage.Store;
 import duchess.ui.Ui;
 
-import java.util.List;
 import java.util.Optional;
 
 public class AddTodoCommand extends Command {
-    private List<String> description;
+    private String description;
     private String moduleCode;
 
-    public AddTodoCommand(List<String> description) {
+    public AddTodoCommand(String description) {
         this.description = description;
         this.moduleCode = null;
     }
 
-    public AddTodoCommand(List<String> description, String moduleCode) {
+    public AddTodoCommand(String description, String moduleCode) {
         this.description = description;
         this.moduleCode = moduleCode;
     }
