@@ -35,7 +35,7 @@ public class AddGradeCommand extends Command {
     }
 
     /**
-     * Adds a grade to a module
+     * Adds a grade to a module.
      *
      * @param store the store
      * @param ui Userinterface object

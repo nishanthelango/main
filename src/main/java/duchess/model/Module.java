@@ -13,6 +13,12 @@ public class Module {
     private String code;
     private List<Grade> grades;
 
+    /**
+     * Creates a new Module.
+     *
+     * @param code the code of the module
+     * @param name the mame of the module
+     */
     @JsonCreator
     public Module(@JsonProperty("code") String code, @JsonProperty("name") String name) {
         this.code = code;

@@ -93,7 +93,8 @@ public class Ui {
     }
 
     /**
-     * Displays the newly added grade as well as other grades
+     * Displays the newly added grade as well as other grades.
+     *
      * @param module module to which grade is added
      * @param grade newly added grade
      * @param grades existing grades
@@ -106,6 +107,11 @@ public class Ui {
         showGrades(grades);
     }
 
+    /**
+     * Displays grades in the list given.
+     *
+     * @param grades list of grades
+     */
     public void showGrades(List<Grade> grades) {
         int counter = 1;
         for (Grade grade : grades) {

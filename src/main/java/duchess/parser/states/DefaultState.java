@@ -2,7 +2,6 @@ package duchess.parser.states;
 
 import duchess.exceptions.DuchessException;
 import duchess.logic.commands.AddDeadlineCommand;
-import duchess.logic.commands.AddEventCommand;
 import duchess.logic.commands.AddGradeCommand;
 import duchess.logic.commands.AddTodoCommand;
 import duchess.logic.commands.ByeCommand;
@@ -144,9 +143,9 @@ public class DefaultState implements ParserState {
                 String task = gradeTokens.get(1);
                 int weightage = Integer.parseInt(parameters.getOrDefault("weightage", "0"));
                 return new AddGradeCommand(marks, maxMarks, weightage, task, moduleCode);
-            } catch (NumberFormatException | NullPointerException | IndexOutOfBoundsException e ) {
-                throw new DuchessException("Usage: grade <marks> /weightage <weightage> /for <module> <assessment>\n" +
-                        "\te.g. grade 15\\30 /weightage 25 /for CS2113 midterm");
+            } catch (NumberFormatException | NullPointerException | IndexOutOfBoundsException e) {
+                throw new DuchessException("Usage: grade <marks> /weightage <weightage> /for <module> <assessment>\n"
+                        + "\te.g. grade 15\\30 /weightage 25 /for CS2113 midterm");
             }
         case "bye":
             return new ByeCommand();
