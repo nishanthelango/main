@@ -4,10 +4,29 @@ import duchess.model.Grade;
 import duchess.model.Module;
 import duchess.model.task.Task;
 
+import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.SortedMap;
+import java.util.stream.Collectors;
 
 public class Ui {
+
+    /**
+     * The following final strings are used to print out duchessCalendar.
+     */
+    private final int horizontalLength = 161;
+    private final int blockLength = 23;
+    private final String emptyBlock = "                     |";
+    public final String calendarHeader = "|  TIME  |         MON         |         TUE         |         WED         "
+            + "|         THUR        |         FRI         |         SAT         |         SUN         |";
+    public final String blockSeparator = "+--------+---------------------+---------------------+---------------------"
+            + "+---------------------+---------------------+---------------------+---------------------+";
+    public final String plainSeparator = "+---------------------------------------------------------------------------"
+            + "---------------------------------------------------------------------------------------+";
+
     /**
      * Reference to Scanner.
      */
@@ -157,8 +176,81 @@ public class Ui {
         }
     }
 
+    /**
+     * Inform user calendar has been saved as test file.
+     *
+     * @param filePath filePath
+     */
     public void showFinishedExport(String filePath) {
-        printIndented("Your schedule has finished exporting to " + filePath);
+        printIndented("Your calendar has finished exporting to " + filePath);
+    }
+
+    /**
+     * Process block to be printed in calendar.
+     *
+     * @param str string of null value or containing description of task
+     * @return shortened or padded-with-whitespace string
+     */
+    private String processDescription(String str) {
+        if (str == null) {
+            return emptyBlock;
+        } else if (str.length() > blockLength) {
+            str = str.substring(0, blockLength - 3) + "...";
+        } else {
+            while (str.length() <= blockLength) {
+                str += " ";
+            }
+        }
+        return str + "|";
+    }
+
+    /**
+     * Pads the header for the calendar.
+     *
+     * @param str string containing academic year + semester + week
+     * @return string with academic context centered and padded with whitespace
+     */
+    public String processHeader(String str) {
+        int partition = (int) Math.floor((horizontalLength - str.length()) / (double) 2);
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append(" ".repeat(Math.max(0, partition)));
+        strBuilder.append(str);
+        strBuilder.append(" ".repeat(Math.max(0, horizontalLength - strBuilder.length() + 1)));
+        return "|" + strBuilder.toString() + "|";
+    }
+
+    /**
+     * Joins together the various blocks for the week.
+     *
+     * @param time   time
+     * @param strArr array containing descriptions
+     * @return joined string of descriptions or empty blocks
+     */
+    public String processRow(String time, String[] strArr) {
+        return "|  " + time + "  |"
+                + Arrays.stream(strArr)
+                .map(this::processDescription)
+                .collect(Collectors.joining());
+    }
+
+    /**
+     * Prints out weekly calendar displaying only event tasks.
+     *
+     * @param flatCalendar flattened duchessCalendar
+     * @param context      academic year + semester + week
+     */
+    public void displayCalendar(SortedMap<LocalTime, String[]> flatCalendar, String context) {
+        printIndented(plainSeparator);
+        printIndented(processHeader(context));
+        printIndented(blockSeparator);
+        printIndented(calendarHeader);
+        printIndented(blockSeparator);
+        for (Map.Entry<LocalTime, String[]> entry : flatCalendar.entrySet()) {
+            String time = entry.getKey().toString().replaceAll(":", "");
+            String[] strArr = entry.getValue();
+            printIndented(processRow(time, strArr));
+            printIndented(blockSeparator);
+        }
     }
 
     /**
@@ -300,6 +392,8 @@ public class Ui {
     public void showRedo(int redoCounter) {
         if (redoCounter == 1) {
             printIndented("I redid the last command.");
+        } else if (redoCounter == 0) {
+            printIndented("There's nothing to redo.");
         } else {
             printIndented("I redid the last few commands.");
         }

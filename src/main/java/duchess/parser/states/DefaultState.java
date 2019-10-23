@@ -9,7 +9,9 @@ import duchess.logic.commands.ByeCommand;
 import duchess.logic.commands.Command;
 import duchess.logic.commands.DeleteModuleCommand;
 import duchess.logic.commands.DeleteTaskCommand;
+import duchess.logic.commands.DisplayCalendarCommand;
 import duchess.logic.commands.DoneCommand;
+import duchess.logic.commands.ExportCommand;
 import duchess.logic.commands.FindCommand;
 import duchess.logic.commands.LogCommand;
 import duchess.logic.commands.RedoCommand;
@@ -105,26 +107,6 @@ public class DefaultState implements ParserState {
                         .parseDateTime(arguments, separatorIndex + 1);
                 return new AddDeadlineCommand(description, deadline);
             }
-        case "event":
-            int atSeparatorIndex = arguments.indexOf("/at");
-            int toSeparatorIndex = arguments.indexOf("/to");
-            if (arguments.size() == 0 || atSeparatorIndex <= 0 || toSeparatorIndex < atSeparatorIndex) {
-                throw new DuchessException("Format for event: event <event> /at <start datetime> /to <end datetime>");
-            }
-            if (arguments.get(arguments.size() - 1).charAt(0) == '#') {
-                String description = String.join(" ", arguments.subList(0, atSeparatorIndex));
-                LocalDateTime end = Util
-                        .parseDateTime(arguments.subList(0, arguments.size() - 1), toSeparatorIndex + 1);
-                LocalDateTime start = Util
-                        .parseDateTime(arguments.subList(0, arguments.size() - 1), atSeparatorIndex + 1);
-                String moduleCode = arguments.get(arguments.size() - 1).substring(1);
-                return new AddEventCommand(description, end, start, moduleCode);
-            } else {
-                String description = String.join(" ", arguments.subList(0, atSeparatorIndex));
-                LocalDateTime end = Util.parseDateTime(arguments, toSeparatorIndex + 1);
-                LocalDateTime start = Util.parseDateTime(arguments, atSeparatorIndex + 1);
-                return new AddEventCommand(description, end, start);
-            }
         case "reminder":
             return new ReminderCommand();
         case "snooze":
@@ -142,6 +124,16 @@ public class DefaultState implements ParserState {
             } catch (IndexOutOfBoundsException e) {
                 throw new DuchessException("Usage: schedule <date> (day | week)");
             }
+        case "calendar":
+            if (words.size() != 2) {
+                throw new DuchessException("Usage: calendar <date>");
+            }
+            return new DisplayCalendarCommand(Util.parseToWeekDates(Util.parseDate(words.get(1))));
+        case "export":
+            if (words.size() != 2) {
+                throw new DuchessException("Usage: export <date>");
+            }
+            return new ExportCommand(Util.parseToWeekDates(Util.parseDate(words.get(1))));
         case "grade":
             try {
                 List<String> score = Arrays.asList(parameters.get("general").split("\\\\"));
@@ -171,7 +163,6 @@ public class DefaultState implements ParserState {
 
     @Override
     public Command continueParsing(Map<String, String> parameters) throws DuchessException {
-        // This should never be called theoretically
         throw new DuchessException("An unexpected error occurred while processing your command.");
     }
 }

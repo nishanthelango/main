@@ -28,21 +28,19 @@ public class UndoCommand extends Command {
 
     @Override
     public void execute(Store store, Ui ui, Storage storage) throws DuchessException {
-        if (undoCounter > 1) {
-            while (undoCounter > 0 && storage.getUndoStack().size() > 1) {
+        if (storage.getUndoStack().size() == 1) {
+            undoCounter = 0;
+        } else if (storage.getUndoStack().size() > 1 && undoCounter > 1) {
+            storage.addToRedoStack();
+            int tempCounter = undoCounter;
+            while (tempCounter > 0 && storage.getUndoStack().size() > 1) {
                 setToPreviousStore(store, storage);
-                undoCounter--;
+                tempCounter--;
             }
-        } else if (undoCounter == 1) {
-
-            if (storage.getUndoStack().size() == 2) {
-                setToPreviousStore(store, storage);
-
-            } else if (storage.getUndoStack().size() > 1) {
-                setToPreviousStore(store, storage);
-            }
+        } else if (storage.getUndoStack().size() > 1 && undoCounter == 1) {
+            storage.addToRedoStack();
+            setToPreviousStore(store, storage);
         }
-
         // showUndo should only be placed after execution of undo.
         ui.showUndo(undoCounter);
     }
