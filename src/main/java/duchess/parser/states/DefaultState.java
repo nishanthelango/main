@@ -73,7 +73,7 @@ public class DefaultState implements ParserState {
             }
         case "done":
             try {
-                return new DoneCommand(Integer.parseInt(words.get(0)) - 1);
+                return new DoneCommand(Integer.parseInt(arguments.get(0)) - 1);
             } catch (NumberFormatException e) {
                 throw new DuchessException("Please supply a number. Eg: done 2");
             }
