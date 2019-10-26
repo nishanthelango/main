@@ -6,14 +6,12 @@ import duchess.logic.commands.AddGradeCommand;
 import duchess.logic.commands.AddTodoCommand;
 import duchess.logic.commands.ByeCommand;
 import duchess.logic.commands.Command;
-import duchess.logic.commands.DeleteModuleCommand;
-import duchess.logic.commands.DeleteTaskCommand;
 import duchess.logic.commands.DisplayCalendarCommand;
 import duchess.logic.commands.DisplayCommand;
 import duchess.logic.commands.DoneCommand;
 import duchess.logic.commands.ExportCommand;
 import duchess.logic.commands.FindCommand;
-import duchess.logic.commands.LogCommand;
+import duchess.logic.commands.HistoryCommand;
 import duchess.logic.commands.RedoCommand;
 import duchess.logic.commands.ReminderCommand;
 import duchess.logic.commands.SnoozeCommand;
@@ -22,6 +20,8 @@ import duchess.logic.commands.ViewScheduleCommand;
 import duchess.parser.Parser;
 import duchess.parser.Util;
 import duchess.parser.commands.DeleteCommandParser;
+import duchess.parser.commands.DeleteLessonCommandParser;
+import duchess.parser.commands.LessonCommandParser;
 import duchess.parser.commands.ListCommandParser;
 import duchess.parser.states.add.AddState;
 
@@ -60,6 +60,8 @@ public class DefaultState implements ParserState {
             return new FindCommand(arguments);
         } else if ("delete".equals(keyword)) {
             return DeleteCommandParser.parse(parameters);
+        } else if ("ldelete".equals(keyword)) {
+            return DeleteLessonCommandParser.parse(parameters);
         } else if ("done".equals(keyword)) {
             try {
                 return new DoneCommand(Integer.parseInt(arguments.get(0)) - 1);
@@ -136,10 +138,12 @@ public class DefaultState implements ParserState {
                 throw new DuchessException("Usage: grade <marks> /weightage <weightage> /for <module> <assessment>\n"
                         + "\te.g. grade 15\\30 /weightage 25 /for CS2113 midterm");
             }
+        } else if ("lesson".equals(keyword)) {
+            return LessonCommandParser.parse(parameters);
         } else if ("bye".equals(keyword)) {
             return new ByeCommand();
-        } else if ("log".equals(keyword)) {
-            return new LogCommand();
+        } else if ("history".equals(keyword)) {
+            return new HistoryCommand();
         } else if ("undo".equals(keyword)) {
             return new UndoCommand(arguments);
         } else if ("redo".equals(keyword)) {
