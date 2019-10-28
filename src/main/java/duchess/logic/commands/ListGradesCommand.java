@@ -9,7 +9,7 @@ import duchess.ui.Ui;
 import java.util.Optional;
 
 public class ListGradesCommand extends Command {
-    String moduleCode;
+    private String moduleCode;
 
     public ListGradesCommand(String moduleCode) {
         this.moduleCode = moduleCode;
