@@ -12,7 +12,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DeleteCommandParserTest {
+class DeleteCommandParserTest {
     @Test
     void parse() throws DuchessException {
         Map<String, String> parameters1 = Util.parameterize("delete task /no 1");
