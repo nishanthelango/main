@@ -47,6 +47,7 @@ public class AddGradeCommand extends Command {
         Grade grade = new Grade(assessment, marks, maxMarks, weightage);
         Optional<Module> optionalModule = store.findModuleByCode(moduleCode);
         Module module = optionalModule.orElseThrow(() -> new DuchessException("Unable to find given module."));
+        module.addGrade(grade);
         ui.showGradeAdded(module, grade, module.getGrades());
         storage.save(store);
     }
