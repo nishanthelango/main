@@ -13,6 +13,7 @@ public class Grade {
     private int marks;
     private int maxMarks;
     private int weightage;
+    private boolean isComplete;
 
     /**
      * Creates a Grade object.
@@ -24,16 +25,19 @@ public class Grade {
      */
     @JsonCreator
     public Grade(@JsonProperty("task") String assessment, @JsonProperty("marks") int marks,
-                 @JsonProperty("maxMarks") int maxMarks, @JsonProperty("weightage") int weightage) {
+                 @JsonProperty("maxMarks") int maxMarks, @JsonProperty("weightage") int weightage,
+                 @JsonProperty("isComplete") boolean isComplete) {
         this.assessment = assessment;
         this.marks = marks;
         this.maxMarks = maxMarks;
         this.weightage = weightage;
+        this.isComplete = isComplete;
     }
 
     public Grade(String assessment, int weightage) {
         this.assessment = assessment;
         this.weightage = weightage;
+        this.isComplete = false;
     }
 
     @JsonGetter
@@ -74,6 +78,20 @@ public class Grade {
     @JsonSetter
     public void setWeightage(int weightage) {
         this.weightage = weightage;
+    }
+
+    @JsonGetter
+    public boolean getIsComplete(boolean isComplete) {
+        return isComplete;
+    }
+
+    @JsonSetter
+    public void setIsComplete(boolean isComplete) {
+        this.isComplete = isComplete;
+    }
+
+    public void markAsComplete() {
+        this.isComplete = true;
     }
 
     @Override
