@@ -4,18 +4,13 @@ import duchess.exceptions.DuchessException;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DeadlineTest {
-    List<String> getList(String input) {
-        return List.of(input.split(" "));
-    }
 
     @Test
     public void toString_formatted_correctly() {
-        List<String> list = getList("do something /by 20/12/2019 1243");
         assertEquals("[D][✘] do something (by: 20/12/2019 1243)",
                 new Deadline("do something", LocalDateTime.parse("2019-12-20T12:43")).toString());
     }
