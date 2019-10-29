@@ -14,7 +14,7 @@ public class DeadlineTest {
     }
 
     @Test
-    public void toString_formatted_correctly() throws DuchessException {
+    public void toString_formatted_correctly() {
         List<String> list = getList("do something /by 20/12/2019 1243");
         assertEquals("[D][✘] do something (by: 20/12/2019 1243)",
                 new Deadline("do something", LocalDateTime.parse("2019-12-20T12:43")).toString());
@@ -35,7 +35,7 @@ public class DeadlineTest {
     }
 
     @Test
-    public void setDeadline_setsDeadline() throws DuchessException {
+    public void setDeadline_setsDeadline() {
         Deadline deadline = new Deadline("do something", LocalDateTime.parse("2019-12-26T12:12"));
         assertEquals(deadline.getDeadline(), "2019-12-26T12:12");
         deadline.setDeadline("2019-12-27T12:12");
