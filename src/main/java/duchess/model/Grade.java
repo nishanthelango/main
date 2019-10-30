@@ -22,6 +22,7 @@ public class Grade {
      * @param marks marks obtained
      * @param maxMarks maximum marks obtainable
      * @param weightage weightage of assessment out of 100
+     * @param isComplete true if the assessment is complete, false otherwise
      */
     @JsonCreator
     public Grade(@JsonProperty("task") String assessment, @JsonProperty("marks") int marks,
@@ -34,10 +35,30 @@ public class Grade {
         this.isComplete = isComplete;
     }
 
+    /**
+     * Creates a grade object.
+     *
+     * @param assessment description of assessment
+     * @param weightage weightage of assessment out of 100
+     */
     public Grade(String assessment, int weightage) {
         this.assessment = assessment;
         this.weightage = weightage;
         this.isComplete = false;
+    }
+
+    /**
+     * Creates a grade object.
+     *
+     * @param assessment description of assessment
+     * @param marks marks obtained
+     * @param maxMarks maximum marks obtainable
+     * @param weightage weightage of assessment out of 100
+     */
+    public Grade(String assessment, int marks, int maxMarks, int weightage) {
+        this(assessment, weightage);
+        this.marks = marks;
+        this.maxMarks = maxMarks;
     }
 
     @JsonGetter
