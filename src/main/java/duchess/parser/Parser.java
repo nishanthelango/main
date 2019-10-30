@@ -30,6 +30,7 @@ public class Parser {
     public static final String DELETE_USAGE =
             "Usage: delete (task | module | grade /module <module_code>) /no <number>"
                     + "\n    Usage: delete (lesson) /type <lesson_type> /code <module_code>";
+    public static final String CALENDAR_USAGE = "calendar (display | export) /date <date>";
 
     /**
      * Prompts.
@@ -62,9 +63,9 @@ public class Parser {
             "When is %s due?";
     public static final String TODO_DESCRIPTION_PROMPT =
             "What's the to-do about?";
-    public static final String TODO_WEIGHTAGE_PROMPT =
+    public static final String TASK_WEIGHTAGE_PROMPT =
             "If this is an assessment, what's its weightage? (enter 'nil' to skip)";
-    public static final String TODO_INVALID_WEIGHTAGE =
+    public static final String TASK_INVALID_WEIGHTAGE =
             "Please enter a weightage between 0 to 100. (enter 'nil' to skip)";
 
     /**
