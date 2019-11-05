@@ -10,10 +10,11 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  */
 public class Grade {
     private String assessment;
-    private int marks;
-    private int maxMarks;
-    private int weightage;
+    private double marks;
+    private double maxMarks;
+    private double weightage;
     private boolean isComplete;
+    private double modulePercentage; // marks obtained converted to percentage of the module
 
     /**
      * Creates a Grade object.
@@ -33,6 +34,11 @@ public class Grade {
         this.maxMarks = maxMarks;
         this.weightage = weightage;
         this.isComplete = isComplete;
+    }
+
+
+    private void calculateModulePercentage() {
+        modulePercentage = marks / maxMarks * 100;
     }
 
     /**
@@ -59,6 +65,8 @@ public class Grade {
         this(assessment, weightage);
         this.marks = marks;
         this.maxMarks = maxMarks;
+        this.isComplete = true;
+        calculateModulePercentage();
     }
 
     @JsonGetter
@@ -72,7 +80,7 @@ public class Grade {
     }
 
     @JsonGetter
-    public int getMarks() {
+    public double getMarks() {
         return marks;
     }
 
@@ -82,7 +90,7 @@ public class Grade {
     }
 
     @JsonGetter
-    public int getMaxMarks() {
+    public double getMaxMarks() {
         return maxMarks;
     }
 
@@ -92,7 +100,7 @@ public class Grade {
     }
 
     @JsonGetter
-    public int getWeightage() {
+    public double getWeightage() {
         return weightage;
     }
 
@@ -117,6 +125,6 @@ public class Grade {
 
     @Override
     public String toString() {
-        return String.format("%s %d/%d %d%%", assessment, marks, maxMarks, weightage);
+        return String.format("%s %.2f/%.2f %.2f%%", assessment, marks, maxMarks, weightage);
     }
 }

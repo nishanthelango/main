@@ -12,6 +12,9 @@ public class Module {
     private String name;
     private String code;
     private List<Grade> grades;
+    private double weightageCompleted; // total weightage of completed grades
+    private double weightageObtained; // weightage obtained from completed grades
+    private double weightageTotal; // total weightage for all the grades
 
     /**
      * Creates a new Module.
@@ -68,8 +71,9 @@ public class Module {
         return grades;
     }
 
-    public void addGrade(Grade grade) {
-        this.grades.add(grade);
+    @JsonSetter("weightageCompleted")
+    public void setWeightageCompleted(List<Grade> grades) {
+        this.grades = grades;
     }
 
     public void deleteGrade(int gradeNo) {
