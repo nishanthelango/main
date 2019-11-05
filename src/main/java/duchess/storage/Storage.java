@@ -122,7 +122,6 @@ public class Storage {
      * Adds Store object to stack.
      *
      * @param store current store object
-     * @throws DuchessException throws exception when unable to push object to stack
      */
     public void addToUndoStackPush(Store store) {
         String jsonVal = getStoreToString(store);
@@ -185,15 +184,15 @@ public class Storage {
      *
      * @return top object as a store object
      */
-    public Store peekUndoStackAsStore() {
+    public Store peekUndoStackAsStore() throws DuchessException {
         if (undoStack.size() != 0) {
             try {
                 String undoStackString = undoStack.peekLast();
                 Store store = getObjectMapper().readValue(undoStackString, Store.class);
                 return store;
 
-            } catch (Exception e) {
-                System.out.println(STRING_TO_STORE_ERROR_MESSAGE);
+            } catch (IOException e) {
+                throw new DuchessException(STRING_TO_STORE_ERROR_MESSAGE);
             }
         }
         return new Store();
