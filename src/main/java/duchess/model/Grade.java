@@ -110,7 +110,7 @@ public class Grade {
     }
 
     @JsonGetter
-    public boolean getIsComplete(boolean isComplete) {
+    public boolean getIsComplete() {
         return isComplete;
     }
 
@@ -119,12 +119,26 @@ public class Grade {
         this.isComplete = isComplete;
     }
 
+    @JsonGetter
+    public double getModulePercentage() {
+        return modulePercentage;
+    }
+
+    @JsonSetter
+    public void setModulePercentage(double modulePercentage) {
+        this.modulePercentage = modulePercentage;
+    }
+
     public void markAsComplete() {
         this.isComplete = true;
     }
 
     @Override
     public String toString() {
-        return String.format("%s %.2f/%.2f %.2f%%", assessment, marks, maxMarks, weightage);
+        if (isComplete) {
+            return String.format("%s %.2f/%.2f %.2f%%", assessment, marks, maxMarks, weightage);
+        } else {
+            return String.format("%s %.2f%%", assessment, weightage);
+        }
     }
 }

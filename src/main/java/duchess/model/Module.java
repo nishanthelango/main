@@ -72,11 +72,58 @@ public class Module {
     }
 
     @JsonSetter("weightageCompleted")
-    public void setWeightageCompleted(List<Grade> grades) {
-        this.grades = grades;
+    public void setWeightageCompleted(double weightageCompleted) {
+        this.weightageCompleted = weightageCompleted;
+    }
+
+    @JsonGetter("weightageCompleted")
+    public double getWeightageCompleted() {
+        return weightageCompleted;
+    }
+
+    @JsonSetter("weightageObtained")
+    public void setWeightageObtained(double weightageObtained) {
+        this.weightageObtained = weightageObtained;
+    }
+
+    @JsonGetter("weightageObtained")
+    public double getWeightageObtained() {
+        return weightageObtained;
+    }
+
+    @JsonSetter("weightageTotal")
+    public void setWeightageTotal(double weightageTotal) {
+        this.weightageTotal = weightageTotal;
+    }
+
+    @JsonGetter("weightageTotal")
+    public double getWeightageTotal() {
+        return weightageTotal;
     }
 
     public void deleteGrade(int gradeNo) {
         this.grades.remove(gradeNo);
+    }
+
+    public void addGrade(Grade grade) {
+        this.grades.add(grade);
+        if (grade.getIsComplete()) {
+            updateCompleteGradeWeightage(grade.getModulePercentage(), grade.getWeightage());
+        } else {
+            weightageTotal += grade.getWeightage();
+        }
+    }
+
+    /**
+     * Updates the weightages related to completed grades.
+     * Called when a completed grade is added to the list of grades.
+     *
+     * @param obtainedPercentage marks obtained in the newly added grade as a percentage of the module
+     * @param gradeWeightage the weightage of the grade
+     */
+    private void updateCompleteGradeWeightage(double obtainedPercentage, double gradeWeightage) {
+        this.weightageCompleted += gradeWeightage;
+        this.weightageTotal += gradeWeightage;
+        this.weightageObtained += obtainedPercentage;
     }
 }
