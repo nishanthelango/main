@@ -8,6 +8,9 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents an academic module taken by students.
+ */
 public class Module {
     private String name;
     private String code;
@@ -33,6 +36,12 @@ public class Module {
         return String.format("%s %s %.1f/%.1f%%", code, name, weightageObtained, weightageCompleted);
     }
 
+    /**
+     * Returns true if the module has the same code as the supplied code.
+     *
+     * @param code the code to check against the module code
+     * @return true if there is a match
+     */
     public boolean isOfCode(String code) {
         return this.code.equalsIgnoreCase(code);
     }
@@ -49,6 +58,14 @@ public class Module {
         }
         Module that = (Module) other;
         return this.code.equalsIgnoreCase(that.code);
+    }
+
+    /**
+     * Deletes the specified grade object from the module.
+     * @param gradeNo the index of the grade to delete
+     */
+    public void deleteGrade(int gradeNo) {
+        this.grades.remove(gradeNo);
     }
 
     @JsonGetter("name")
@@ -101,14 +118,10 @@ public class Module {
         return weightageTotal;
     }
 
-    public void deleteGrade(int gradeNo) {
-        this.grades.remove(gradeNo);
-    }
-
     /**
-     * Adds a grade to list of grades.
+     * Adds a given grade object to the module.
      *
-     * @param grade Grade to be added
+     * @param grade the grade to add
      */
     public void addGrade(Grade grade) {
         if (grade.getIsComplete()) {
