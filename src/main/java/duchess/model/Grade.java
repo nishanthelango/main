@@ -36,9 +36,8 @@ public class Grade {
         this.isComplete = isComplete;
     }
 
-
     private void calculateModulePercentage() {
-        modulePercentage = marks / maxMarks * 100;
+        modulePercentage = marks / maxMarks * weightage;
     }
 
     /**
@@ -136,9 +135,9 @@ public class Grade {
     @Override
     public String toString() {
         if (isComplete) {
-            return String.format("%s %.2f/%.2f %.2f%%", assessment, marks, maxMarks, weightage);
+            return String.format("%s %.1f/%.1f %.1f%%", assessment, marks, maxMarks, weightage);
         } else {
-            return String.format("%s %.2f%%", assessment, weightage);
+            return String.format("%s %.1f%%", assessment, weightage);
         }
     }
 }

@@ -30,7 +30,7 @@ public class Module {
     }
 
     public String toString() {
-        return this.code + " " + this.name;
+        return String.format("%s %s %.1f/%.1f%%", code, name, weightageObtained, weightageCompleted);
     }
 
     public boolean isOfCode(String code) {
@@ -105,13 +105,18 @@ public class Module {
         this.grades.remove(gradeNo);
     }
 
+    /**
+     * Adds a grade to list of grades.
+     *
+     * @param grade Grade to be added
+     */
     public void addGrade(Grade grade) {
-        this.grades.add(grade);
         if (grade.getIsComplete()) {
             updateCompleteGradeWeightage(grade.getModulePercentage(), grade.getWeightage());
         } else {
-            weightageTotal += grade.getWeightage();
+            updateIncompleteGradeWeightage(grade.getWeightage());
         }
+        this.grades.add(grade);
     }
 
     /**
@@ -125,5 +130,15 @@ public class Module {
         this.weightageCompleted += gradeWeightage;
         this.weightageTotal += gradeWeightage;
         this.weightageObtained += obtainedPercentage;
+    }
+
+    /**
+     * Updates the total weightage.
+     * Called when an incomplete grade is added to the list of grades.
+     *
+     * @param gradeWeightage the weightage of the grade
+     */
+    private void updateIncompleteGradeWeightage(double gradeWeightage) {
+        this.weightageTotal += gradeWeightage;
     }
 }
