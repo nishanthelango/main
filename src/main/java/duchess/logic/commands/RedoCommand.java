@@ -6,11 +6,14 @@ import duchess.storage.Store;
 import duchess.ui.Ui;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Redo feature.
  */
 public class RedoCommand extends Command {
+    private final Logger logger;
     private int redoCounter;
     private static final String REDO_USAGE_ERROR_MESSAGE = "Usage: redo [number]";
     private static final String NEGATIVE_NUMBER_ERROR_MESSAGE
@@ -25,6 +28,7 @@ public class RedoCommand extends Command {
      * @throws DuchessException if invalid command
      */
     public RedoCommand(List<String> words) throws DuchessException {
+        this.logger = Logger.getLogger("Duchess");
         if (words.size() != 1 && words.size() != 0) {
             throw new DuchessException(REDO_USAGE_ERROR_MESSAGE);
         } else if (words.size() == 1) {
@@ -54,6 +58,8 @@ public class RedoCommand extends Command {
      */
     @Override
     public void execute(Store store, Ui ui, Storage storage) throws DuchessException {
+        logger.log(Level.INFO, "Redo is executed.");
+
         if (storage.getRedoStack().size() == 0) {
             redoCounter = 0;
         } else if (storage.getRedoStack().size() > 0 && redoCounter > 1) {
@@ -65,23 +71,20 @@ public class RedoCommand extends Command {
         } else if (storage.getRedoStack().size() > 0 && redoCounter == 1) {
             setToNextStore(store, storage);
         }
-        // showUndo should only be placed after execution of undo.
         ui.showRedo(redoCounter);
     }
 
     /**
-     * Updates data to previous Store values.
+     * Updates data to previous Store values as obtained from stack.
      *
      * @param store store object
      * @param storage storage object
      * @throws DuchessException if updating store is unsuccessful
      */
     private void setToNextStore(Store store, Storage storage) throws DuchessException {
-        // Obtain Store data from duchess.storage Stack
         Store prevStore = storage.getFirstSnapshot();
         storage.save(prevStore);
 
-        // Obtaining store from stack
         Store newStore = storage.load();
         store.setTaskList(newStore.getTaskList());
         store.setModuleList(newStore.getModuleList());

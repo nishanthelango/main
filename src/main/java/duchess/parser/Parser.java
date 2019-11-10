@@ -23,6 +23,7 @@ public class Parser {
     public static final String MODULE_KEYWORD = "module";
     public static final String LESSON_KEYWORD = "lesson";
     public static final String GRADE_KEYWORD = "grade";
+    public static final String MARKS_KEYWORD = "marks";
 
     /**
      * Usage for commands.
@@ -36,6 +37,8 @@ public class Parser {
             "Usage: delete (task | module | grade /module <module_code>) /no <number>"
                     + "\n    Usage: delete (lesson) /type <lesson_type> /code <module_code>";
     public static final String CALENDAR_USAGE = "calendar (display | export) /date <date> /view (day | week)";
+    public static final String DONE_USAGE = "Usage: done (task | grade /module <module_code> "
+            + "\n    /marks <marks>) /no <number>";
 
     /**
      * Prompts.
@@ -73,7 +76,7 @@ public class Parser {
     public static final String TASK_INVALID_WEIGHTAGE =
             "Please enter a weightage between 0 to 100. (enter 'nil' to skip)";
 
-    private static final Logger logger = Logger.getLogger("Parser");
+    private final Logger logger;
 
     /**
      * Error messages.
@@ -84,10 +87,19 @@ public class Parser {
     private ParserState parserState;
 
     /**
-     * Initializes the duchess parser.
+     * Initializes the duchess parser with a logger.
+     */
+    public Parser(Logger logger) {
+        this.parserState = new DefaultState(this);
+        this.logger = logger;
+    }
+
+    /**
+     * Initializes the duchess parser with a default logger.
      */
     public Parser() {
         this.parserState = new DefaultState(this);
+        this.logger = Logger.getLogger("Duchess");
     }
 
     /**

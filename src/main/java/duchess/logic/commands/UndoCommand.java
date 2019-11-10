@@ -6,11 +6,14 @@ import duchess.storage.Store;
 import duchess.ui.Ui;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Undo feature.
  */
 public class UndoCommand extends Command {
+    private final Logger logger;
     private int undoCounter;
     private static final String UNDO_USAGE_ERROR_MESSAGE = "Usage: undo [number]";
     private static final String NEGATIVE_NUMBER_ERROR_MESSAGE
@@ -25,6 +28,7 @@ public class UndoCommand extends Command {
      * @throws DuchessException throws exceptions if invalid command
      */
     public UndoCommand(List<String> words) throws DuchessException {
+        this.logger = Logger.getLogger("Duchess");
         if (words.size() != 1 && words.size() != 0) {
             throw new DuchessException(UNDO_USAGE_ERROR_MESSAGE);
         } else if (words.size() == 1) {
@@ -55,6 +59,8 @@ public class UndoCommand extends Command {
      */
     @Override
     public void execute(Store store, Ui ui, Storage storage) throws DuchessException {
+        logger.log(Level.INFO, "Undo is executed.");
+
         if (storage.getUndoStack().size() == 1) {
             undoCounter = 0;
         } else if (storage.getUndoStack().size() > 1 && undoCounter > 1) {
@@ -68,7 +74,6 @@ public class UndoCommand extends Command {
             storage.addToRedoStack();
             setToPreviousStore(store, storage);
         }
-        // showUndo should only be placed after execution of undo.
         ui.showUndo(undoCounter);
     }
 
@@ -83,7 +88,6 @@ public class UndoCommand extends Command {
         storage.getLastSnapshot();
         storage.save(storage.peekUndoStackAsStore());
 
-        // Obtaining store from stack
         Store newStore = storage.load();
         assert (store.equals(newStore));
         store.setTaskList(newStore.getTaskList());

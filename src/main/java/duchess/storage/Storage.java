@@ -14,12 +14,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Storage {
+    private final Logger logger;
+
     private String fileName;
     private Deque<String> undoStack;
     private Deque<String> redoStack;
 
+    // storageSize must be 1 more than intended size value.
+    private static final int storageSize = 11;
     private static final String UNREADABLE_FILE_MESSAGE
             = "Unable to read file, continuing with empty list.";
     private static final String FILE_WRITE_ERROR_MESSAGE
@@ -43,18 +49,15 @@ public class Storage {
      * @param fileName filename for duchess.storage
      */
     public Storage(String fileName) {
+        this.logger = Logger.getLogger("Duchess");
         this.fileName = fileName;
         undoStack = new LinkedList<>();
         redoStack = new LinkedList<>();
     }
 
-    // Unchecked type coercion is necessary here.
-    // And possible cast exceptions are handled
-
     /**
      * Returns the tasklist loaded from file.
      */
-    @SuppressWarnings("unchecked")
     public Store load() throws DuchessException {
         try {
             FileInputStream fileStream = new FileInputStream(this.fileName);
@@ -73,6 +76,7 @@ public class Storage {
      * @throws DuchessException an error if unable to write to file
      */
     public void save(Store store) throws DuchessException {
+        logger.log(Level.INFO, "Saves to file.");
         try {
             FileOutputStream fileStream = new FileOutputStream(this.fileName);
             getObjectMapper().writeValue(fileStream, store);
@@ -140,6 +144,9 @@ public class Storage {
             assert (undoStack.size() == 0);
             undoStack.addLast(jsonVal);
         }
+
+        // Ensures undoStack size is within acceptable value.
+        deleteExcessUndoStack();
     }
 
     /**
@@ -153,8 +160,14 @@ public class Storage {
             throw new DuchessException(EMPTY_REDO_STACK_ERROR_MESSAGE);
         }
         String jsonVal = redoStack.pollFirst();
+
         // Add this string to undoStack
         undoStack.addLast(jsonVal);
+        assert (undoStack.size() != 0);
+
+        deleteExcessUndoStack();
+
+        assert (undoStack.size() <= 10);
 
         try {
             Store store = getObjectMapper().readValue(jsonVal, Store.class);
@@ -171,10 +184,20 @@ public class Storage {
         }
     }
 
+    /**
+     * Returns an undoStack.
+     *
+     * @return undoStack
+     */
     public Deque<String> getUndoStack() {
         return this.undoStack;
     }
 
+    /**
+     * Returns a redoStack.
+     *
+     * @return redoStack
+     */
     public Deque<String> getRedoStack() {
         return this.redoStack;
     }
@@ -210,7 +233,7 @@ public class Storage {
         try {
             jsonVal = getObjectMapper().writeValueAsString(store);
         } catch (JsonProcessingException e) {
-            jsonVal = new String();
+            jsonVal = "";
             assert (jsonVal.equals(""));
         }
         return jsonVal;
@@ -220,9 +243,30 @@ public class Storage {
      * Adds deserialized string from undoStack to redoStack.
      */
     public void addToRedoStack() {
+
         if (undoStack.size() != 0) {
             String jsonVal = undoStack.peekLast();
             redoStack.addFirst(jsonVal);
+        }
+
+        deleteExcessRedoStack();
+    }
+
+    /**
+     * Sets redoStack to specified size.
+     */
+    private void deleteExcessRedoStack() {
+        while (redoStack.size() > storageSize) {
+            redoStack.pollLast();
+        }
+    }
+
+    /**
+     * Sets undoStack to specified size.
+     */
+    private void deleteExcessUndoStack() {
+        while (undoStack.size() > storageSize) {
+            undoStack.pollFirst();
         }
     }
 }
