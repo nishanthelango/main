@@ -32,6 +32,11 @@ public class Module {
         grades = new ArrayList<>();
     }
 
+    /**
+     * Returns a string to represent the Module.
+     *
+     * @return string to represent module
+     */
     public String toString() {
         if (weightageCompleted == 0) {
             return String.format("%s %s", code, name);

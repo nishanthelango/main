@@ -27,7 +27,6 @@ public class DoneCommandParser {
                 int number = Integer.parseInt(parameters.get("no"));
                 return new DoneTaskCommand(number);
             } else if (type.equals(Parser.GRADE_KEYWORD)) {
-                int number = Integer.parseInt(parameters.get("no"));
                 String moduleCode = parameters.get(Parser.MODULE_KEYWORD);
                 if (moduleCode == null) {
                     throw new IllegalArgumentException();
@@ -41,6 +40,7 @@ public class DoneCommandParser {
                 if (marksObtained < 0 || maxMarks < 1 || marksObtained > maxMarks) {
                     throw new IllegalArgumentException();
                 }
+                int number = Integer.parseInt(parameters.get("no"));
                 return new DoneGradeCommand(moduleCode, number, marksObtained, maxMarks);
             } else {
                 throw new IllegalArgumentException();

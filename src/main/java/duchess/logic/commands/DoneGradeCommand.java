@@ -13,12 +13,20 @@ import java.util.Optional;
  * Command to mark Specified task as complete.
  * Marks are given to be added to the grade.
  */
-public class DoneGradeCommand extends Command{
+public class DoneGradeCommand extends Command {
     private int marksObtained;
     private int maxMarks;
     private String moduleCode;
     private int gradeNo;
 
+    /**
+     * Creates a command to mark given task as complete.
+     *
+     * @param moduleCode the code of the module
+     * @param gradeNo the index of the grade in list of grades
+     * @param marksObtained marks obtained
+     * @param maxMarks maximum marks obtainable
+     */
     public DoneGradeCommand(String moduleCode, int gradeNo, int marksObtained, int maxMarks) {
         this.gradeNo = gradeNo - 1;
         this.moduleCode = moduleCode;
