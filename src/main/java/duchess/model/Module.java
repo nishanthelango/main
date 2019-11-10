@@ -33,6 +33,9 @@ public class Module {
     }
 
     public String toString() {
+        if (weightageCompleted == 0) {
+            return String.format("%s %s", code, name);
+        }
         return String.format("%s %s %.1f/%.1f%%", code, name, weightageObtained, weightageCompleted);
     }
 
@@ -133,6 +136,18 @@ public class Module {
     }
 
     /**
+     * Updates the completed and obtained weightages.
+     * Called when a grade is marked as complete
+     *
+     * @param grade grade marked as complete
+     */
+
+    public void updateGrade(Grade grade) {
+        this.weightageCompleted += grade.getWeightage();
+        this.weightageObtained += grade.getModulePercentage();
+    }
+
+    /**
      * Updates the weightages related to completed grades.
      * Called when a completed grade is added to the list of grades.
      *
@@ -154,4 +169,5 @@ public class Module {
     private void updateIncompleteGradeWeightage(double gradeWeightage) {
         this.weightageTotal += gradeWeightage;
     }
+
 }

@@ -1,16 +1,15 @@
 package duchess.logic.commands;
 
 import duchess.exceptions.DuchessException;
-import duchess.model.Grade;
 import duchess.model.task.Task;
 import duchess.storage.Storage;
 import duchess.storage.Store;
 import duchess.ui.Ui;
 
-public class DoneCommand extends Command {
+public class DoneTaskCommand extends Command {
     private int taskNo;
 
-    public DoneCommand(int taskNo) {
+    public DoneTaskCommand(int taskNo) {
         this.taskNo = taskNo;
     }
 
@@ -19,7 +18,6 @@ public class DoneCommand extends Command {
         try {
             Task task = store.getTaskList().get(taskNo);
             task.setDone(true);
-            task.getGrade().ifPresent(Grade::markAsComplete);
             ui.showDoneTask(task);
             storage.save(store);
         } catch (IndexOutOfBoundsException e) {

@@ -2,7 +2,6 @@ package duchess.model;
 
 import duchess.exceptions.DuchessException;
 import duchess.logic.commands.Command;
-import duchess.logic.commands.DoneCommand;
 import duchess.logic.commands.HistoryCommand;
 import duchess.logic.commands.ListTasksCommand;
 import duchess.logic.commands.RedoCommand;

@@ -128,8 +128,11 @@ public class Grade {
         this.modulePercentage = modulePercentage;
     }
 
-    public void markAsComplete() {
+    public void markAsComplete(int marks, int maxMarks) {
         this.isComplete = true;
+        this.marks = marks;
+        this.maxMarks = maxMarks;
+        calculateModulePercentage();
     }
 
     @Override
