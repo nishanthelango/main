@@ -9,6 +9,8 @@ import duchess.ui.Ui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DeleteLessonCommand extends Command {
     private String type;
@@ -42,8 +44,6 @@ public class DeleteLessonCommand extends Command {
                 isDeleted = true;
 
                 store.setDuchessCalendar(CalendarManager.deleteEntry(store.getDuchessCalendar(), task));
-
-                // Decrement i by 1 every time removal is performed.
                 i--;
             }
         }
