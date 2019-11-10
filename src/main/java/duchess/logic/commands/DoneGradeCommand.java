@@ -9,6 +9,10 @@ import duchess.ui.Ui;
 
 import java.util.Optional;
 
+/**
+ * Command to mark Specified task as complete.
+ * Marks are given to be added to the grade.
+ */
 public class DoneGradeCommand extends Command{
     private int marksObtained;
     private int maxMarks;

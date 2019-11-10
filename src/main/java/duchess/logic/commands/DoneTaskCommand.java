@@ -6,6 +6,9 @@ import duchess.storage.Storage;
 import duchess.storage.Store;
 import duchess.ui.Ui;
 
+/**
+ * Command to mark specified task as done.
+ */
 public class DoneTaskCommand extends Command {
     private int taskNo;
 

@@ -9,6 +9,9 @@ import duchess.ui.Ui;
 
 import java.util.Optional;
 
+/**
+ * Command to delete grade from given module.
+ */
 public class DeleteGradeCommand extends Command {
     private final String moduleCode;
     private final int gradeNo;
