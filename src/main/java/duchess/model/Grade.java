@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  * Represents a grade in a module.
  */
 public class Grade {
-    private String assessment;
+    private String description;
     private double marks;
     private double maxMarks;
     private double weightage;
@@ -19,17 +19,17 @@ public class Grade {
     /**
      * Creates a Grade object.
      *
-     * @param assessment description of assessment
+     * @param description description of assessment
      * @param marks marks obtained
      * @param maxMarks maximum marks obtainable
      * @param weightage weightage of assessment out of 100
      * @param isComplete true if the assessment is complete, false otherwise
      */
     @JsonCreator
-    public Grade(@JsonProperty("task") String assessment, @JsonProperty("marks") int marks,
-                 @JsonProperty("maxMarks") int maxMarks, @JsonProperty("weightage") int weightage,
+    public Grade(@JsonProperty("task") String description, @JsonProperty("marks") double marks,
+                 @JsonProperty("maxMarks") double maxMarks, @JsonProperty("weightage") double weightage,
                  @JsonProperty("isComplete") boolean isComplete) {
-        this.assessment = assessment;
+        this.description = description;
         this.marks = marks;
         this.maxMarks = maxMarks;
         this.weightage = weightage;
@@ -43,11 +43,11 @@ public class Grade {
     /**
      * Creates a grade object.
      *
-     * @param assessment description of assessment
+     * @param description description of assessment
      * @param weightage weightage of assessment out of 100
      */
-    public Grade(String assessment, int weightage) {
-        this.assessment = assessment;
+    public Grade(String description, double weightage) {
+        this.description = description;
         this.weightage = weightage;
         this.isComplete = false;
     }
@@ -55,13 +55,13 @@ public class Grade {
     /**
      * Creates a grade object.
      *
-     * @param assessment description of assessment
+     * @param description description of assessment
      * @param marks marks obtained
      * @param maxMarks maximum marks obtainable
      * @param weightage weightage of assessment out of 100
      */
-    public Grade(String assessment, int marks, int maxMarks, int weightage) {
-        this(assessment, weightage);
+    public Grade(String description, double marks, double maxMarks, double weightage) {
+        this(description, weightage);
         this.marks = marks;
         this.maxMarks = maxMarks;
         this.isComplete = true;
@@ -70,12 +70,12 @@ public class Grade {
 
     @JsonGetter
     public String getTask() {
-        return assessment;
+        return description;
     }
 
     @JsonSetter
     public void setTask(String assessment) {
-        this.assessment = assessment;
+        this.description = assessment;
     }
 
     @JsonGetter
@@ -84,7 +84,7 @@ public class Grade {
     }
 
     @JsonSetter
-    public void setMarks(int marks) {
+    public void setMarks(double marks) {
         this.marks = marks;
     }
 
@@ -94,7 +94,7 @@ public class Grade {
     }
 
     @JsonSetter
-    public void setMaxMarks(int maxMarks) {
+    public void setMaxMarks(double maxMarks) {
         this.maxMarks = maxMarks;
     }
 
@@ -104,7 +104,7 @@ public class Grade {
     }
 
     @JsonSetter
-    public void setWeightage(int weightage) {
+    public void setWeightage(double weightage) {
         this.weightage = weightage;
     }
 
@@ -135,7 +135,7 @@ public class Grade {
      * @param marks    marks obtained
      * @param maxMarks maximum marks obtainable
      */
-    public void markAsComplete(int marks, int maxMarks) {
+    public void markAsComplete(double marks, double maxMarks) {
         this.isComplete = true;
         this.marks = marks;
         this.maxMarks = maxMarks;
@@ -145,9 +145,9 @@ public class Grade {
     @Override
     public String toString() {
         if (isComplete) {
-            return String.format("%s %.1f/%.1f %.1f%%", assessment, marks, maxMarks, weightage);
+            return String.format("%s %.1f/%.1f %.1f%%", description, marks, maxMarks, weightage);
         } else {
-            return String.format("%s %.1f%%", assessment, weightage);
+            return String.format("%s %.1f%%", description, weightage);
         }
     }
 }
