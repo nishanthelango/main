@@ -18,6 +18,9 @@ public class DoneGradeCommand extends Command {
     private int maxMarks;
     private String moduleCode;
     private int gradeNo;
+    private static final String VALID_NUMBER_MSG = "Please supply a valid number.";
+    private static final String MODULE_NOT_FOUND_MSG = "Unable to find given module.";
+
 
     /**
      * Creates a command to mark given task as complete.
@@ -48,9 +51,9 @@ public class DoneGradeCommand extends Command {
                 throw new IllegalArgumentException();
             }
         } catch (IndexOutOfBoundsException e) {
-            throw new DuchessException("Please supply a valid number.");
+            throw new DuchessException(VALID_NUMBER_MSG);
         } catch (IllegalArgumentException e) {
-            throw new DuchessException("Unable to find given module.");
+            throw new DuchessException(MODULE_NOT_FOUND_MSG);
         }
     }
 }

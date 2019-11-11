@@ -19,6 +19,7 @@ public class AddGradeCommand extends Command {
     private double weightage;
     private String moduleCode;
     private static final String TOTAL_WEIGHTAGE_ERROR = "Total weightage of grades cannot exceed 100.";
+    private static final String MODULE_NOT_FOUND_MSG = "Unable to find given module.";
 
     /**
      * Creates a command to add a grade to a module.
@@ -57,7 +58,7 @@ public class AddGradeCommand extends Command {
             ui.showGradeAdded(module.get(), grade, module.get().getGrades());
             storage.save(store);
         } else {
-            throw new DuchessException("Unable to find given module.");
+            throw new DuchessException(MODULE_NOT_FOUND_MSG);
         }
     }
 }
