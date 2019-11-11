@@ -26,8 +26,8 @@ public class Grade {
      * @param isComplete true if the assessment is complete, false otherwise
      */
     @JsonCreator
-    public Grade(@JsonProperty("task") String description, @JsonProperty("marks") int marks,
-                 @JsonProperty("maxMarks") int maxMarks, @JsonProperty("weightage") int weightage,
+    public Grade(@JsonProperty("task") String description, @JsonProperty("marks") double marks,
+                 @JsonProperty("maxMarks") double maxMarks, @JsonProperty("weightage") double weightage,
                  @JsonProperty("isComplete") boolean isComplete) {
         this.description = description;
         this.marks = marks;
@@ -104,7 +104,7 @@ public class Grade {
     }
 
     @JsonSetter
-    public void setWeightage(int weightage) {
+    public void setWeightage(double weightage) {
         this.weightage = weightage;
     }
 
