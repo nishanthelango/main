@@ -15,6 +15,7 @@ import java.util.List;
  * Command to remove given task from the tasklist.
  */
 public class DeleteTaskCommand extends Command {
+    private static final String SUPPLY_VALID_NUMBER_MSG = "Please supply a valid number.";
     private final int taskNo;
 
     public DeleteTaskCommand(int taskNo) {
@@ -43,7 +44,7 @@ public class DeleteTaskCommand extends Command {
             }
             storage.save(store);
         } catch (IndexOutOfBoundsException e) {
-            throw new DuchessException("Please supply a valid number.");
+            throw new DuchessException(SUPPLY_VALID_NUMBER_MSG);
         }
     }
 }
