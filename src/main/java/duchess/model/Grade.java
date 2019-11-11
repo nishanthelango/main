@@ -46,7 +46,7 @@ public class Grade {
      * @param description description of assessment
      * @param weightage weightage of assessment out of 100
      */
-    public Grade(String description, int weightage) {
+    public Grade(String description, double weightage) {
         this.description = description;
         this.weightage = weightage;
         this.isComplete = false;
@@ -60,7 +60,7 @@ public class Grade {
      * @param maxMarks maximum marks obtainable
      * @param weightage weightage of assessment out of 100
      */
-    public Grade(String description, int marks, int maxMarks, int weightage) {
+    public Grade(String description, double marks, double maxMarks, double weightage) {
         this(description, weightage);
         this.marks = marks;
         this.maxMarks = maxMarks;
@@ -84,7 +84,7 @@ public class Grade {
     }
 
     @JsonSetter
-    public void setMarks(int marks) {
+    public void setMarks(double marks) {
         this.marks = marks;
     }
 
@@ -94,7 +94,7 @@ public class Grade {
     }
 
     @JsonSetter
-    public void setMaxMarks(int maxMarks) {
+    public void setMaxMarks(double maxMarks) {
         this.maxMarks = maxMarks;
     }
 
@@ -135,7 +135,7 @@ public class Grade {
      * @param marks    marks obtained
      * @param maxMarks maximum marks obtainable
      */
-    public void markAsComplete(int marks, int maxMarks) {
+    public void markAsComplete(double marks, double maxMarks) {
         this.isComplete = true;
         this.marks = marks;
         this.maxMarks = maxMarks;
