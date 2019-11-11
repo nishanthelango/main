@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import duchess.exceptions.DuchessException;
+import duchess.log.Log;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -49,7 +50,7 @@ public class Storage {
      * @param fileName filename for duchess.storage
      */
     public Storage(String fileName) {
-        this.logger = Logger.getLogger("Duchess");
+        this.logger = Log.getLogger();
         this.fileName = fileName;
         undoStack = new LinkedList<>();
         redoStack = new LinkedList<>();
@@ -114,10 +115,8 @@ public class Storage {
         } catch (JsonParseException e) {
             throw new DuchessException(JSON_PARSE_ERROR_MESSAGE);
         } catch (JsonMappingException e) {
-            e.printStackTrace();
             throw new DuchessException(UNSUCCESSFUL_MAP_ERROR_MESSAGE);
         } catch (IOException e) {
-            e.printStackTrace();
             throw new DuchessException(DUCHESS_STORAGE_ERROR_MESSAGE);
         }
     }
@@ -173,13 +172,10 @@ public class Storage {
             Store store = getObjectMapper().readValue(jsonVal, Store.class);
             return store;
         } catch (JsonParseException e) {
-            e.printStackTrace();
             throw new DuchessException(JSON_PARSE_ERROR_MESSAGE);
         } catch (JsonMappingException e) {
-            e.printStackTrace();
             throw new DuchessException(UNSUCCESSFUL_MAP_ERROR_MESSAGE);
         } catch (IOException e) {
-            e.printStackTrace();
             throw new DuchessException(DUCHESS_STORAGE_ERROR_MESSAGE);
         }
     }
