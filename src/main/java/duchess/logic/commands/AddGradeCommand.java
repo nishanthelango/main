@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * Command to add a given grade to list of grades.
  */
 public class AddGradeCommand extends Command {
-    private String assessment;
+    private String description;
     private double marks;
     private double maxMarks;
     private double weightage;
@@ -31,11 +31,13 @@ public class AddGradeCommand extends Command {
      * @param marks marks obtained
      * @param maxMarks maximum marks obtainable
      * @param weightage weightage of assessment out of 100
-     * @param assessment description of assessment
+     * @param description description of assessment
      * @param moduleCode the code of the module
      */
-    public AddGradeCommand(double marks, double maxMarks, double weightage, String assessment, String moduleCode) {
-        this.assessment = assessment;
+    public AddGradeCommand(double marks, double maxMarks, double weightage, String description, String moduleCode) {
+        assert description != null : "description cannot be empty";
+        assert moduleCode != null : "module code cannot be empty";
+        this.description = description;
         this.marks = marks;
         this.maxMarks = maxMarks;
         this.weightage = weightage;
@@ -54,17 +56,18 @@ public class AddGradeCommand extends Command {
     @Override
     public void execute(Store store, Ui ui, Storage storage) throws DuchessException {
 
-        Grade grade = new Grade(assessment, marks, maxMarks, weightage);
-        logger.log(Level.INFO, "Going to add grade: " + grade);
+        Grade grade = new Grade(description, marks, maxMarks, weightage);
+        logger.log(Level.INFO, "Going to add grade : " + grade);
         Optional<Module> module = store.findModuleByCode(moduleCode);
         if (module.isPresent()) {
             if (grade.getWeightage() + module.get().getWeightageTotal() > 100.0) {
                 throw new DuchessException(TOTAL_WEIGHTAGE_ERROR);
             }
             module.get().addGrade(grade);
+            assert module.get().getWeightageTotal() <= 100 : "weightage should not exceed 100";
             ui.showGradeAdded(module.get(), grade, module.get().getGrades());
             storage.save(store);
-            logger.log(Level.INFO, "Added grade: " + grade);
+            logger.log(Level.INFO, "Added grade : " + grade);
         } else {
             throw new DuchessException(MODULE_NOT_FOUND_MSG);
         }
